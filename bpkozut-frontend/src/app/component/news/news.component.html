@@ -1,0 +1,104 @@
+<ng-template #addNews let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create news</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form class="news-form" #addNewsForm>
+      <mat-form-field class="news-full-width">
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="title" [(ngModel)]="newsToAdd.title" required name="title">
+        <mat-error>Title required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="news-full-width">
+        <mat-label>Content</mat-label>
+        <textarea matInput placeholder="Content" [(ngModel)]="newsToAdd.content" required name="content"></textarea>
+        <mat-error>Content required</mat-error>
+      </mat-form-field>
+
+      <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-md  btn-outline-dark" (click)="modal.close('Save click')"
+      [disabled]="!newsToAdd.title || !newsToAdd.content">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #updateNews let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Update news</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form class="news-form" #updateNewsForm>
+      <mat-form-field class="news-full-width">
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="title" [(ngModel)]="newsToUpdate.title" required name="title">
+        <mat-error>Title required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="news-full-width">
+        <mat-label>Content</mat-label>
+        <textarea matInput placeholder="Content" [(ngModel)]="newsToUpdate.content" required name="content"></textarea>
+        <mat-error>Content required</mat-error>
+      </mat-form-field>
+
+      <input type="file" (change)="onFileSelected($event)" #fileUpload>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-md  btn-outline-dark" (click)="modal.close('Save click')"
+      [disabled]="!newsToUpdate.content || !newsToUpdate.title">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #readNews let-modal>
+  <div class="modal-header">
+    <h1 class="modal-title" id="modal-basic-title">{{newsToRead.title}}</h1>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body d-flex flex-column">
+    <img class="p-2 col-12" *ngIf="newsToRead.image" mat-card-image [src]="'../../../assets/images/' + newsToRead.image"
+      onerror="this.src='../../../assets/images/bpkozut-logo.jpg';">
+    <p>{{newsToRead.content}}</p>
+  </div>
+  <div class="modal-footer d-flex flex-column align-content-center">
+    <h3 class="m-0">Created: {{newsToRead.created}}</h3>
+    <h3 class="m-0">Updated: {{newsToRead.updated}}</h3>
+    <h3 class="m-0">Author: {{newsToRead.author}}</h3>
+  </div>
+</ng-template>
+
+<div>
+
+  <button class="btn btn-md  btn-outline-dark" (click)="addNewsFunction(addNews)">Add news</button>
+
+
+  <div class="d-flex flex-wrap p-2 justify-content-center">
+    <mat-card class="news-card col-md-5 col-lg-3 col-12 m-2 p-2" *ngFor="let item of allNews">
+      <mat-card-header (click)="readNewsFunction(item, readNews)">
+        <mat-card-title>{{item.title}}</mat-card-title>
+        <mat-card-subtitle>Created: {{item.created}}</mat-card-subtitle>
+        <mat-card-subtitle>Updated: {{item.updated}}</mat-card-subtitle>
+        <mat-card-subtitle>Author: {{item.author}}</mat-card-subtitle>
+      </mat-card-header>
+      <img class="p-2" *ngIf="item.image" mat-card-image [src]="'../../../assets/images/' + item.image"
+        onerror="this.src='../../../assets/images/bpkozut-logo.jpg';" (click)="readNewsFunction(item, readNews)">
+      <img class="p-2" *ngIf="!item.image" mat-card-image src='../../../assets/images/bpkozut-logo.jpg'
+        (click)="readNewsFunction(item, readNews)">
+      <mat-card-actions class="card-actions d-flex justify-content-end">
+        <button class="btn btn-md  btn-outline-dark m-1" (click)="deleteNews(item.id)">Delete</button>
+        <button class="btn btn-md  btn-outline-dark m-1" (click)="updateNewsFunction(updateNews, item)">Update</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+
+  <mat-paginator #paginator class="paginator d-flex flex-column justify-content-end" (page)="handlePageEvent($event)"
+    [length]="length" [pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
+    [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []" [hidePageSize]="hidePageSize" [pageIndex]="pageIndex"
+    aria-label="Select page">
+  </mat-paginator>
+</div>

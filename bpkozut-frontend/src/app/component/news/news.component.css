@@ -1,0 +1,25 @@
+.dark-modal .modal-content {
+  background-color: #292b2c;
+  color: white;
+}
+
+.dark-modal .close {
+  color: white;
+}
+
+.light-blue-backdrop {
+  background-color: #5cb3fd;
+}
+
+.news-form {
+  min-width: 150px;
+  width: 100%;
+}
+
+.news-full-width {
+  width: 100%;
+}
+
+.news-card:hover {
+  box-shadow: -1px 10px 29px 0px rgba(0, 0, 0, 0.8);
+}
